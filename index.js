@@ -2,6 +2,10 @@ require('mysql2');
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
+const sequelize = require('./config/database'); // Your sequelize instance
+
+
 // const { sequelize, Product, User, Cart, CartItem } = require('./models/Product');
 const { sequelize, Product, User, Cart, CartItem, Order, OrderItem } = require('./models/Product');
 
@@ -11,20 +15,27 @@ const { Op } = require('sequelize');
 
 
 const app = express();
-const PORT = 3000;
+
 
 app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Create a new session store using the database
+const mySessionStore = new SequelizeStore({
+  db: sequelize,
+});
+
 app.use(session({
-  secret: 'your_secret_key',
+  secret: process.env.SESSION_SECRET, // LOAD THIS FROM ENVIRONMENT VARIABLES!
+  store: mySessionStore,
   resave: false,
-  saveUninitialized: false,
-  cookie: { secure: false }
+  saveUninitialized: false, // Set to false for best practice
 }));
 
+// This will create the 'Sessions' table in your database if it doesn't exist
+mySessionStore.sync();
 app.get('/', (req, res) => {
   res.redirect('/login');
 });
