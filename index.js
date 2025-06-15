@@ -1,4 +1,7 @@
 require('mysql2');
+
+require('dotenv').config();
+
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
@@ -498,3 +501,13 @@ sequelize.authenticate()
 // --- EXPORT THE APP FOR VERCEL ---
 // This is the most important part. Vercel uses this to handle requests.
 module.exports = app;
+
+// This block will only run if the server is NOT on Vercel
+if (process.env.VERCEL_ENV !== 'production') {
+  const PORT = process.env.PORT || 3000;
+  
+  // This line was removed for Vercel, but we need it for local development
+  app.listen(PORT, () => {
+    console.log(`✅ Server is running locally on http://localhost:${PORT}`);
+  });
+}
