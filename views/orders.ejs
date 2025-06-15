@@ -1,0 +1,59 @@
+<!-- views/orders.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Orders</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+  <div class="container mt-5">
+    <h2 class="mb-4 text-center">Order History</h2>
+    <% if (orders.length > 0) { %>
+      <% orders.forEach(order => { %>
+        <div class="card mb-4">
+          <div class="card-header bg-primary text-white">
+            Order ID: <%= order.orderId %> | Placed on: <%= order.orderDate.toLocaleString() %>
+          </div>
+          <div class="card-body">
+            <p><strong>Payment Mode:</strong> <%= order.paymentMode %></p>
+            <p><strong>Status:</strong> <%= order.status %></p>
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Price (₹)</th>
+                  <th>Quantity</th>
+                  <th>Subtotal (₹)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% order.OrderItems.forEach(item => { %>
+                  <tr>
+                    <td><%= item.Product.productName %></td>
+                    <td>₹<%= item.price %></td>
+                    <td><%= item.quantity %></td>
+                    <td>₹<%= (item.price * item.quantity).toFixed(2) %></td>
+                  </tr>
+                <% }) %>
+              </tbody>
+              <tfoot>
+              <tr>
+                <th colspan="3" class="text-end">Total:</th>
+                <th>₹<%= parseFloat(order.totalPrice).toFixed(2) %></th>
+              </tr>
+            </tfoot>
+
+            </table>
+          </div>
+        </div>
+      <% }) %>
+    <% } else { %>
+      <div class="alert alert-info text-center">You haven't placed any orders yet.</div>
+    <% } %>
+    <div class="text-center mt-4">
+      <a href="/profile" class="btn btn-secondary">Back to Profile</a>
+    </div>
+  </div>
+</body>
+</html>

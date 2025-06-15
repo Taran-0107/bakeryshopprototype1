@@ -1,0 +1,28 @@
+<div class="container mt-5">
+    <h2>Your Cart</h2>
+    <% if (items.length > 0) { %>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Unit Price</th>
+                    <th>Qty</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% items.forEach(item => { %>
+                    <tr>
+                        <td><%= item.name %></td>
+                        <td>₹<%= item.price %></td>
+                        <td><%= item.quantity %></td>
+                        <td>₹<%= item.subtotal %></td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+        <h4 class="text-end">Total: ₹<%= total %></h4>
+    <% } else { %>
+        <p>Your cart is empty!</p>
+    <% } %>
+</div>
