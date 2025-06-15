@@ -471,11 +471,19 @@ app.get('/cart', async (req, res) => {
   }
 });
 
-sequelize.authenticate().then(() => {
-  console.log('Connected to MySQL DB');
-  app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
+
+// --- DATABASE CONNECTION CHECK ---
+// This part is for checking the connection and logging. It does not start the server.
+// When your Vercel function starts (a "cold start"), this code will run.
+sequelize.authenticate()
+  .then(() => {
+    console.log('Database connection has been established successfully.');
+  })
+  .catch(err => {
+    console.error('Unable to connect to the database:', err);
   });
-}).catch(err => {
-  console.error('DB connection failed:', err);
-});
+
+
+// --- EXPORT THE APP FOR VERCEL ---
+// This is the most important part. Vercel uses this to handle requests.
+module.exports = app;
