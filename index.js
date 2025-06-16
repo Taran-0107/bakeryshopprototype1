@@ -7,7 +7,6 @@ const SequelizeStore = require('connect-session-sequelize')(session.Store);
 // const { sequelize, Product, User, Cart, CartItem } = require('./models/Product');
 const { sequelize, Product, User, Cart, CartItem, Order, OrderItem } = require('./models/Product');
 // const { Sequelize, Op } = require('sequelize');
-const { Op } = require('sequelize');
 const route_app=require('./exportmanager/routemanage');
 
 const app = express();
@@ -56,6 +55,7 @@ app.use(async (req, res, next) => {
   next();
 });
 
+//Routing the app
 route_app(app);
 
 // --- DATABASE CONNECTION CHECK ---
