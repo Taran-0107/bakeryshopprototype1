@@ -91,7 +91,7 @@
   document.getElementById("cartForm").addEventListener("submit", function (e) {
     const qty = document.getElementById("quantity").value;
     const productId = "<%= product.productId %>";
-    this.action = `/add-to-cart/${productId}?quantity=${qty}`;
+    this.action = `/cart/add-to-cart/${productId}?quantity=${qty}`;
   });
 </script>
 
